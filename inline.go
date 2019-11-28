@@ -109,6 +109,7 @@ func emphasis(p *parser, out *bytes.Buffer, data []byte, offset int) int {
 	return 0
 }
 
+// 代码块
 func codeSpan(p *parser, out *bytes.Buffer, data []byte, offset int) int {
 	data = data[offset:]
 
@@ -211,6 +212,9 @@ func link(p *parser, out *bytes.Buffer, data []byte, offset int) int {
 
 	var t linkType
 	switch {
+	// task list /checkbox ，复选框测试
+	case len(data)-1 > offset && data[offset+1] == '^':
+		t = linkImg
 	// special case: ![^text] == deferred footnote (that follows something with
 	// an exclamation point)
 	case p.flags&EXTENSION_FOOTNOTES != 0 && len(data)-1 > offset && data[offset+1] == '^':
